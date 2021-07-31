@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Ruslan+Display&display=swap'); 
+@import url('https://fonts.googleapis.com/css2?family=Ruslan+Display&family=Thasadith:wght@700&display=swap');
+
+
+body{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: auto;
+    margin:0;
+}
+
+.CalculatorShell{
+    height: 60vh;
+    width: 55vh;
+    border: 2px solid black;
+    padding: 4px;
+    border-radius: 3%;
+    display: flex;
+    flex-direction: column;
+}
+
+.TopPartCalculator{
+    background-color: rgb(70, 70, 70);
+    border-radius: 3%;
+    margin:2px;
+}
+
+.brandName{
+    height: 2em;
+    border-radius: 3%;
+    margin: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.brand{
+    font-family: 'Ruslan Display', cursive;
+    font-size: 1.6em;
+    color: rgb(241, 240, 240);
+}
+.model{
+    font-family: 'Thasadith', sans-serif;
+    font-size: 1em;
+    color: rgb(241, 240, 240);
+}
+
+span{
+    background-color: rgb(116, 116, 116);
+    color: rgb(228, 226, 226);
+    border-radius: 10%;
+    border: 1px solid rgb(116, 116, 116);
+    font-size: .8em;
+}
+
+.displayscreen{
+    height: 5em;
+    width: auto;
+    margin: 1em;
+    background-color: silver;
+    display:flex;
+    flex-direction: column;
+    align-items:flex-end;
+    padding: .1em 1em .1em 1em;
+    border-radius:3%;
+}
+
+.upperdisplay{
+    flex: 33%;
+    width:100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 3px;
+}
+
+.maindisplay{
+    flex: 66%;
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    padding: 3px;
+    font-size: 200%;
+    font-weight:400;
+}
