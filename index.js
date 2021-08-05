@@ -32,7 +32,7 @@ function TransformALlDisplay(){
 const CalculatorNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
 
 const MainOperators = [' ÷', ' X', ' -', ' +']
-const SecondaryOperators = ['Clear', 'Delete', '+/-', 'equals', '²']
+const SecondaryOperators = ['Clear', 'Delete', '+/-', 'equals', '²', 'decimals']
 
 ClientClicks.forEach(buttonClicked => {
     buttonClicked.addEventListener('click', (e) => {
@@ -132,7 +132,7 @@ function switchMainOperations(x) {
 }
 
 
-// Secondary Operator function ['Clear', 'Delete', '+/-', 'equals', '²']//
+// Secondary Operator function ['Clear', 'Delete', '+/-', 'equals', '²', 'decimals']//
 
 function Clearfunc() {
     StoredFirstNumber = '';
@@ -168,6 +168,12 @@ function equalfunc() {
     switchMainOperations(StoredOperator)
 }
 
+function decimalsfunc(){
+    let NewString = StoredFirstNumber.toString();
+    if (NewString.includes('.')) return
+    StoredFirstNumber = NewString + '.'
+}
+
 function switchSecondaryOperators(x) {
     switch (x) {
         case 'Clear':
@@ -193,6 +199,8 @@ function switchSecondaryOperators(x) {
         case 'equals':
             equalfunc();
             break;
-
+        case 'decimals':
+            decimalsfunc()
+        break
     }
 }
