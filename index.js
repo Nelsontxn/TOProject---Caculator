@@ -1,41 +1,31 @@
 
 let StoredFirstNumber = '';
-let StoredOperator = '';
 let StoredSecondNumber = '';
-
-let PrimaryDisplay = '';
-let SecondaryDisplay = '';
+let StoredOperator = '';
+let PrimaryDisplay ='';
+let SecondaryDisplay
 
 const ClientClicks = document.querySelectorAll('.button');
 
 
 //Transfigure main display
-function MainDisplayfunc(x) {
-    const MainDisplay = document.querySelector('.maindisplay');
-    PrimaryDisplay = x;
-    MainDisplay.textContent = Number(PrimaryDisplay);
-}
 
-function SecondaryDisplayfunc(x) {
+function SecondaryDisplayfunc() {
     const SecondDisplay = document.querySelector('.upperdisplay');
-    SecondaryDisplay = x;
+    SecondaryDisplay = `${Number(StoredSecondNumber)}${StoredOperator}`;
     SecondDisplay.textContent = SecondaryDisplay;
 }
 
 
 function TransformMainDisplay() {
-    let MainDisplayDigits = `${StoredFirstNumber}`
-    MainDisplayfunc(MainDisplayDigits)
+    const MainDisplay = document.querySelector('.maindisplay');
+    let MainDisplayDigits = `${StoredFirstNumber}`;
+    MainDisplay.textContent = Number(MainDisplayDigits);
 };
 
-function ClickonOperatorDisplay() {
-    StoredSecondNumber = StoredFirstNumber;
-    StoredFirstNumber = '';
-    MainDisplayfunc(StoredFirstNumber);
-    console.log(StoredOperator);
-    console.log(SecondaryDisplay);
-    SecondaryDisplay = `${Number(StoredSecondNumber)}${StoredOperator}`; // Come back to this if theres an error on the number//
-    SecondaryDisplayfunc(SecondaryDisplay);
+function TransformALlDisplay(){
+    TransformMainDisplay()
+    SecondaryDisplayfunc()
 }
 
 //Click Logic
@@ -48,44 +38,49 @@ ClientClicks.forEach(buttonClicked => {
     buttonClicked.addEventListener('click', (e) => {
         CalculatorInput = e.target.id;
         InputMainOperators(CalculatorInput);
-        InputNumbers(CalculatorInput);
+        TransformALlDisplay()
     }
     )
 }
 )
 
 
-function InputNumbers(x) {
-
-    if (CalculatorNumbers.includes(x)) {
-        if (StoredFirstNumber.length < 12){
-        StoredFirstNumber = StoredFirstNumber + x;
-        TransformMainDisplay()
-    }
-}
-};
 
 
 
 function InputMainOperators(x) {
 
-    if (MainOperators.includes(x)) {
-        if(StoredOperator == ''){
-            StoredOperator = x;
-            ClickonOperatorDisplay()
-            return
-        }
-        if(StoredOperator !== ''){
-            //logic for operations//
-            console.log(StoredFirstNumber);
-            console.log(StoredSecondNumber);
-            switchMainOperations(x);
+    if (CalculatorNumbers.includes(x)) {
+        if (StoredFirstNumber.length < 12) {
+            StoredFirstNumber = StoredFirstNumber + x;
+            
         }
     }
 
 
-    if (SecondaryOperators.includes(x)){
+    if (MainOperators.includes(x)) {
+        if (StoredFirstNumber === '') return
+        if (StoredSecondNumber !== ''){
+            if(StoredOperator == x){
+            switchMainOperations(x);}
+            if(StoredOperator != x){
+                switchMainOperations(StoredOperator)
+                StoredOperator = x
+                switchMainOperations(x)
+            }
+        }
+
+        StoredOperator = x;
+        StoredSecondNumber = StoredFirstNumber;
+        console.log('first number ' + StoredFirstNumber)
+        StoredFirstNumber = '';
+        console.log('second number: '+StoredSecondNumber);
+    }
+
+
+    if (SecondaryOperators.includes(x)) {
         switchSecondaryOperators(x);
+
     }
 };
 
@@ -94,178 +89,110 @@ function InputMainOperators(x) {
 
 // Operator Function //
 
-const add = function (x,y) {
-    let Calsum = x + y;
-   
-    return Calsum;
-};
 
-
-const subtract = function (x,y) {
-    let Subsum = x - y
-    return Subsum;
-};
-
-
-const divide = function (x,y) {
-    if (y != 0){
-    let temp = x/y;
-    let remainder = x%y;
-    if (remainder != 0){
-    return temp.toFixed(4);
-    }
-    if(remainder == 0){
-      return temp
-      }
-    }
-    else{
-        return 'Nice try punk!'
-    }
-}
-
-
-
-const Mutiplication = function (x,y){
-    return x*y;
-}
-
-
-const power = function(x,y) {
-	return x**y;
+const power = function (x, y) {
+    return x ** y;
 };
 
 // Switch Statement for the main operations//
 
-function switchMainOperations(x){
-    switch(x){
+function switchMainOperations(x) {
+    let computation
+    const prev = parseFloat(StoredSecondNumber)
+    const current = parseFloat(StoredFirstNumber)
+    if (isNaN(prev) || isNaN(current)) return
+    switch (x) {
         case ' ÷':
             //divide logic//
-            StoredOperator = '';
-            StoredOperator = ' X'
-            StoredFirstNumber = Number(StoredFirstNumber)
-            StoredSecondNumber = Number(StoredSecondNumber)
-            DivTwoNumber = divide(StoredSecondNumber,StoredFirstNumber)
-            MainDisplayfunc(DivTwoNumber);
-            SecondaryDisplayfunc(DivTwoNumber);
-            if(DivTwoNumber !== 'Nice try punk!'){ 
-                StoredSecondNumber = DivTwoNumber;
-            }
-            else{
-                StoredSecondNumber = '';
-            }
-            StoredFirstNumber ='';
-            StoredOperator = '';
-        break;
-        
+
+            computation = prev / current
+            break
+
         case ' X':
-            StoredOperator = '';
-            StoredOperator = ' X'
-            StoredFirstNumber = Number(StoredFirstNumber)
-            StoredSecondNumber = Number(StoredSecondNumber)
-            MulTwoNumber = Mutiplication(StoredSecondNumber,StoredFirstNumber)
-            MainDisplayfunc(MulTwoNumber);
-            SecondaryDisplayfunc(MulTwoNumber);
-            StoredSecondNumber = MulTwoNumber;
-            StoredFirstNumber ='';
-            StoredOperator = '';
-        break;
+            computation = prev * current
+            break
+
 
         case ' -':
             //subtract logic//
-            StoredOperator = '';
-            StoredOperator = ' -'
-            StoredFirstNumber = Number(StoredFirstNumber)
-            StoredSecondNumber = Number(StoredSecondNumber)
-            SubTwoNumber = subtract(StoredSecondNumber,StoredFirstNumber)
-            MainDisplayfunc(SubTwoNumber);
-            SecondaryDisplayfunc(SubTwoNumber);
-            StoredSecondNumber = SubTwoNumber;
-            StoredFirstNumber ='';
-            StoredOperator = '';
-        break;
+            computation = prev - current
+            break
+
 
         case ' +':
-            StoredOperator = '';
-            StoredOperator = ' +'
-            StoredFirstNumber = Number(StoredFirstNumber)
-            StoredSecondNumber = Number(StoredSecondNumber)
-            AddTwoNumber = add( StoredSecondNumber,StoredFirstNumber)
-            MainDisplayfunc(AddTwoNumber);
-            SecondaryDisplayfunc(AddTwoNumber);
-            StoredSecondNumber =AddTwoNumber;
-            StoredFirstNumber ='';
-            StoredOperator = '';
-        break;
+            computation = prev + current
+            break
+        
+        default:
+            return
     }
+    StoredFirstNumber = computation;
+    StoredOperator = '';
+    StoredSecondNumber = '';
 }
 
 
 // Secondary Operator function ['Clear', 'Delete', '+/-', 'equals', '²']//
 
-function Clearfunc(){
-     StoredFirstNumber = '';
-     StoredOperator = '';
-     StoredSecondNumber = '';
-     PrimaryDisplay = '';
-     SecondaryDisplay = '';
-     MainDisplayfunc(PrimaryDisplay);
-     SecondaryDisplayfunc(SecondaryDisplay);
+function Clearfunc() {
+    StoredFirstNumber = '';
+    StoredOperator = '';
+    StoredSecondNumber = '';
+    PrimaryDisplay = '';
+    SecondaryDisplay = '';
 }
 
-function Deletefunc(){
-    if (typeof(StoredFirstNumber) !== 'string'){
-        let NewString =  StoredFirstNumber.toString;
+function Deletefunc() {
+    if (typeof (StoredFirstNumber) !== 'string') {
+        let NewString = StoredFirstNumber.toString;
         StoredFirstNumber = NewString.slice(0, -1);
-        MainDisplayfunc(Number(StoredFirstNumber));
+
     }
-    else{
-        let tempnum =  StoredFirstNumber;
+    else {
+        let tempnum = StoredFirstNumber;
         StoredFirstNumber = tempnum.slice(0, -1);
-        MainDisplayfunc(Number(StoredFirstNumber));
     }
 }
 
-function realNumberChange(){
+function realNumberChange() {
     StoredFirstNumber = Number(StoredFirstNumber);
     StoredFirstNumber = StoredFirstNumber * -1;
-    MainDisplayfunc(Number(StoredFirstNumber))
 }
 
-function PowerofTwo(){
+function PowerofTwo() {
     StoredFirstNumber = Number(StoredFirstNumber);
-    StoredFirstNumber = StoredFirstNumber **2;
-    MainDisplayfunc(Number(StoredFirstNumber))
+    StoredFirstNumber = StoredFirstNumber ** 2;
 }
 
-function equalfunc(){
-    switchMainOperations(StoredOperator);
+function equalfunc() {
+    switchMainOperations(StoredOperator)
 }
 
-function switchSecondaryOperators(x){
-    switch(x){
+function switchSecondaryOperators(x) {
+    switch (x) {
         case 'Clear':
             Clearfunc()
-        break;
+            break;
 
 
         case 'Delete':
             Deletefunc()
-        break;
+            break;
 
 
         case '+/-':
             realNumberChange();
-        break;
+            break;
 
 
         case '²':
             PowerofTwo();
-        break;
+            break;
 
 
         case 'equals':
             equalfunc();
-        break;
+            break;
 
     }
 }
